@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%Let's calculate membrane potential using the leaky integrate-and-fire neuron model%%%%%%%%%%%%%%
+%%%%%%%%% Let's calculate membrane potential using the leaky integrate-and-fire neuron model %%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Given values for the leaky integrate-and-fire neuron model
@@ -50,7 +50,7 @@ ylabel('Membrane Potential');
 figure()
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%Now let's calculate approximate firing rate vs. exact firing rate%%%%%%%%%%%%%%
+%%%%%%%%% Now let's calculate approximate firing rate vs. exact firing rate %%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Define new delta t
@@ -132,7 +132,7 @@ hold off;
 figure();
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%Now let's test how sigma effects our approximate firing rate%%%%%%%%%%%%%%
+%%%%%%%%% Now let's test how sigma affects our approximate firing rate %%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Create vector of sigma values
