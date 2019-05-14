@@ -11,7 +11,7 @@ V_th = -50.0;
 V_reset = -65.0;
 
 %Create time vector
-delta_t = 0.1;
+delta_t = 0.0001;
 t = 0:delta_t:100;
 
 %Create vector to store membrane potentials at time t
@@ -46,16 +46,13 @@ end
 %Plot time vs. membrane potential
 plot(t, V);
 xlabel('Time');
-ylabel('Membrane Potential');
+ylabel('Membrane Potential (mV)');
 figure()
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% Now let's calculate approximate firing rate vs. exact firing rate %%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Define new delta t
-%Need smaller time steps in order to achieve firing rate of 100
-delta_t = 0.001;
 t = 0:delta_t:2;
 
 %Create vector of I_app (applied current) values to be used
@@ -125,7 +122,7 @@ hold on;
 
 %Plot applied current vs. exact firing rate
 plot(I_app, firing_rate_exact);
-xlabel('Applied Current');
+xlabel('Applied Current (mV)');
 ylabel('Firing Rate');
 legend('Approximate','Exact')
 hold off;
@@ -178,7 +175,7 @@ for k = 1:length(sigma_I)
 end
 
 %Label
-xlabel('Applied Current');
+xlabel('Applied Current (mV)');
 ylabel('Firing Rate');
 legend(cellstr(num2str(sigma_I', 'Sigma = %-d')));
 hold off;
