@@ -29,7 +29,7 @@ firing_rate_Q1 = zeros(1, length(I_app));
 sigma_I = 0.0;
 
 %Length of voltage clamp in milliseconds
-tau = 0.0025;
+tau_ref = 0.0025;
 
 %Create vector to store mean membrane potential for each trial
 mean_membrane_potential_Q1 = zeros(1, length(I_app));
@@ -37,7 +37,7 @@ mean_membrane_potential_Q1 = zeros(1, length(I_app));
 %Loop through applied current values
 for j = 1:length(I_app)
     %Variable to store time of last spike
-    time_of_last_spike = -tau - 1;
+    time_of_last_spike = -tau_ref - 1;
 
     %Creating vector of noise variables
     noise_vec = randn(size(t)) * sigma_I * sqrt(delta_t);
@@ -54,7 +54,7 @@ for j = 1:length(I_app)
         V(i) = V(i-1) + delta_t * dxdt + noise_vec(i);
         
         %Check if neuron is still within the refractory period
-        if t(i) < time_of_last_spike + tau
+        if t(i) < time_of_last_spike + tau_ref
             V(i) = V_reset;
         end
         
@@ -77,7 +77,7 @@ end
 % Q2 - Threshold Increase
 
 
-tau = 0.001;
+tau_vth = 0.001;
 
 neuron_fires = zeros(1, length(I_app));
 
@@ -105,7 +105,7 @@ for j = 1:length(I_app)
     
         V(i) = V(i-1) + delta_t * dxdt + noise_vec(i);
         
-        V_th(i) = V_th(i-1) + delta_t * (-50.0 - V_th(i-1))/tau;
+        V_th(i) = V_th(i-1) + delta_t * (-50.0 - V_th(i-1))/tau_vth;
                 
         %Check if membrane potential is above threshold
         if V(i) > V_th(i)
@@ -127,7 +127,7 @@ end
 
 E_k = -80.0;
 
-tau = 0.0002;
+tau_gref = 0.0002;
 
 neuron_fires = zeros(1, length(I_app));
 
@@ -158,12 +158,12 @@ for j = 1:length(I_app)
             
         V(i) = V(i-1) + delta_t * dxdt + noise_vec(i);
         
-        G_ref(i) = G_ref(i-1) - (delta_t * G_ref(i-1)/tau);
+        G_ref(i) = G_ref(i-1) - (delta_t * G_ref(i-1)/tau_gref);
         
        
         %Check if membrane potential is above threshold
         if V(i) > V_th(i)
-           %V(i) = V_reset;
+           V(i) = V_reset;
            V_th(i) = 200;
            G_ref(i) = G_ref(i) + 2;
            neuron_fires(j) = neuron_fires(j) + 1;
