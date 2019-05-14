@@ -11,20 +11,13 @@ V_th = -50.0;
 V_reset = -65.0;
 
 %Create time vector
-delta_t = 0.001;
+delta_t = 0.00001;
 t = 0:delta_t:2;
 
 %Create vector of applied I (current) values
 I_app = 100:100:600;
 
-
-
 % Q1 - Forced Voltage Clamp
-
-%Create vector to store membrane potentials at time t
-%Set initial value of the membrane potential vector to E_l
-V = zeros(1, length(t));
-V(1) = E_l;
 
 %Create vector to store number of neuron fires for each trial
 neuron_fires = zeros(1, length(I_app));
@@ -52,6 +45,7 @@ for j = 1:length(I_app)
     %Create vector to store membrane potential values
     V = zeros(1, length(t));
     V(1) = E_l;
+    
     %Loop through time vector
     for i = 2:length(t)
         dxdt = (E_l - V(i-1))/R_m + I_app(j);
@@ -160,13 +154,14 @@ for j = 1:length(I_app)
     %Loop through time vector
     for i = 2:length(t)
         dxdt = (E_l - V(i-1))/R_m + (G_ref(i-1) * (E_k - V(i-1))) + I_app(j);
-        dxdt = dxdt*(1/C_m);
+        dxdt = dxdt*(1/C_m)
+        
     
         V(i) = V(i-1) + delta_t * dxdt + noise_vec(i);
         
-        G_ref(i) = G_ref(i-1) + delta_t * -1.0 * G_ref(i-1)/tau;
+        G_ref(i) = G_ref(i-1) + (delta_t * -1.0 * G_ref(i-1)/tau);
         
-        V_th(i) = V_th(i-1) + delta_t * (-50.0 - V_th(i-1))/tau;
+        V_th(i) = V_th(i-1) + (delta_t * (-50.0 - V_th(i-1))/tau);
                 
         %Check if membrane potential is above threshold
         if V(i) > V_th(i)
@@ -182,5 +177,36 @@ for j = 1:length(I_app)
     firing_rate_Q3(j) = neuron_fires(j)/2;
     
     mean_membrane_potential_Q3(j) = mean(V);
+    
 end
 
+%Plot applied current vs. firing rate for all 3 models
+plot(I_app, firing_rate_Q1);
+hold on;
+plot(I_app, firing_rate_Q2);
+plot(I_app, firing_rate_Q3);
+xlabel('Applied Current');
+ylabel('Firing Rate');
+legend('Voltage Clamp','Threshold Increase', 'Refactory Conductance and Threshold Increase')
+hold off;
+figure();
+
+%Plot applied current vs. mean membrane potential for all 3 models
+plot(I_app, mean_membrane_potential_Q1);
+hold on;
+plot(I_app, mean_membrane_potential_Q2);
+plot(I_app, mean_membrane_potential_Q3);
+xlabel('Applied Current');
+ylabel('Mean Membrane Potential');
+legend('Voltage Clamp','Threshold Increase', 'Refactory Conductance and Threshold Increase')
+hold off;
+
+%Plot firing rate vs. mean membrane potential for all 3 models
+plot(firing_rate_Q1, mean_membrane_potential_Q1);
+hold on;
+plot(firing_rate_Q2, mean_membrane_potential_Q2);
+plot(firing_rate_Q3, mean_membrane_potential_Q3);
+xlabel('Firing Rate');
+ylabel('Mean Membrane Potential');
+legend('Voltage Clamp','Threshold Increase', 'Refactory Conductance and Threshold Increase')
+hold off;
