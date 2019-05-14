@@ -154,22 +154,20 @@ for j = 1:length(I_app)
     %Loop through time vector
     for i = 2:length(t)
         dxdt = (E_l - V(i-1))/R_m + (G_ref(i-1) * (E_k - V(i-1))) + I_app(j);
-        dxdt = dxdt*(1/C_m)
-        
-    
+        dxdt = dxdt*(1/C_m);
+            
         V(i) = V(i-1) + delta_t * dxdt + noise_vec(i);
         
-        G_ref(i) = G_ref(i-1) + (delta_t * -1.0 * G_ref(i-1)/tau);
+        G_ref(i) = G_ref(i-1) - (delta_t * G_ref(i-1)/tau);
         
-        V_th(i) = V_th(i-1) + (delta_t * (-50.0 - V_th(i-1))/tau);
-                
+       
         %Check if membrane potential is above threshold
         if V(i) > V_th(i)
            %V(i) = V_reset;
            V_th(i) = 200;
            G_ref(i) = G_ref(i) + 2;
            neuron_fires(j) = neuron_fires(j) + 1;
-        end
+        end 
         
     end
     
@@ -200,6 +198,7 @@ xlabel('Applied Current');
 ylabel('Mean Membrane Potential');
 legend('Voltage Clamp','Threshold Increase', 'Refactory Conductance and Threshold Increase')
 hold off;
+figure();
 
 %Plot firing rate vs. mean membrane potential for all 3 models
 plot(firing_rate_Q1, mean_membrane_potential_Q1);
