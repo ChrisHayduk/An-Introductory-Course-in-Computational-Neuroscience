@@ -129,10 +129,68 @@ ylabel('Spike rate (Hz)');
 legend('Final Rate',  '1/ISI(1)' , 'Single spike');
 
 hold off;
-figure();
+figure(2);
+
+%%%Comment on results: the firing rate at the initial spike is much higher
+%%%than the final firing rate.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  Q2: AELIF model (Adaptive Exponential Leaky Integrate-and-Fire) %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%Defining constants for model
+E_l = -75.0e-3;
+V_th = -50.0e-3;
+V_reset = -80.0e-3;
 
+delta_th = 2.0e-3;
+
+R_m = 100.0e6;
+
+C_m = 100.0e-12;
+
+E_k = -80.0e-3;
+
+G_l = 10.0e-9;
+
+a = 2.0e-9;
+
+b = 2.0e-11;
+
+tau_sra = 0.2;
+
+delta_t = 0.0001;
+
+t = 0:delta_t:1.5;
+
+I_app = zeros(1, length(t));
+
+I_app(5001:10001) = 500e-12;
+
+V = zeros(1, length(t));
+
+V(1) = E_l;
+
+I_sra = zeros(1, length(t));
+
+%Simulate neuron for 1.5 seconds
+for i = 1:length(t)-1
+    if ( V(i) > V_th )         
+        V(i) = V_reset;         
+        I_sra(i) = I_sra(i) + b;        
+    end
+    
+    V(i+1) = V(i) + delta_t * ( G_l * (E_l - V(i) + delta_th * exp((V(i) - V_th)/delta_th)) - I_sra(i) + I_app(i))/C_m;
+
+    I_sra(i+1) = I_sra(i) + delta_t*(a * (V(i) - E_l) - I_sra(i))/tau_sra;
+end
+
+%Plot figure with applied current and membrane potential over time
+figure(3)
+subplot(2,1,1)
+plot(t, 1e12*I_app);
+ylabel('Current (pA)');
+subplot(2,1,2)
+plot(t, 1000*V);
+ylabel('Membrane Potential (mV)');
+xlabel('Time (s)');
